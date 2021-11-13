@@ -27,6 +27,10 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  material_floating_search_bar: 0.3.6
+  mongo_dart: 0.7.2
+  google_fonts: 2.1.0
+  crypto : ^3.0.0
   flutter:
     sdk: flutter
 
