@@ -23,7 +23,7 @@ class ResultMeme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => _onlocationtap(context, meme.id.toString()),
+        onTap: () => _onlocationtap(context, meme.pri_id),
         child: Card(
             elevation: 2,
             shape:
@@ -237,7 +237,9 @@ class _SearchPageState extends State<SearchPage> {
     var count = await Mongo.coll.count();
     if (x.isNotEmpty) {
       for (var i = 0; i < count; i++) {
-        if (query[i]['title'].contains(x)) {
+        String g = query[i]["title"];
+        String h = g.toLowerCase();
+        if (h.contains(x)) {
           temp.add(query[i]);
         }
       }

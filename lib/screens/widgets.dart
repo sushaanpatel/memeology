@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 import 'models/db_model.dart';
 import 'models/meme_model.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,7 +22,7 @@ class ImageDiv extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => _onlocationtap(context, meme.id.toString()),
+        onTap: () => _onlocationtap(context, meme.pri_id),
         child: Card(
             elevation: 2,
             shape:
@@ -99,5 +98,33 @@ class HomePage extends StatelessWidget {
         },
       )
     ])));
+  }
+}
+
+class TextSection extends StatelessWidget {
+  final String title;
+  final String text;
+  TextSection(this.title, this.text);
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 0, 10),
+            child: Text(
+              title,
+              style: GoogleFonts.poppins(
+                  fontSize: 30, fontWeight: FontWeight.bold),
+            )),
+        Padding(
+            padding: EdgeInsets.only(left: 15),
+            child: Text(
+              text,
+              style: GoogleFonts.poppins(
+                  fontSize: 17, fontWeight: FontWeight.w500),
+            )),
+      ],
+    );
   }
 }

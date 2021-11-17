@@ -2,6 +2,7 @@ import 'package:mongo_dart/mongo_dart.dart';
 
 class Meme {
   final ObjectId id;
+  final String pri_id;
   final String title;
   final String image;
   final String explanation;
@@ -10,6 +11,7 @@ class Meme {
   final List<dynamic> tags;
   Meme(
       {required this.id,
+      required this.pri_id,
       required this.title,
       required this.image,
       required this.explanation,
@@ -19,6 +21,7 @@ class Meme {
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'string_id': pri_id,
         'title': title,
         'image': image,
         'explanation': explanation,
@@ -27,8 +30,9 @@ class Meme {
         'tags': tags
       };
 
-  Meme.fromJson(Map<String, dynamic> json)
+  Meme.fromJson(var json)
       : id = json['_id'],
+        pri_id = json['pri_id'],
         title = json['title'],
         image = json['image'],
         explanation = json['explanation'],

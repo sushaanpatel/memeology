@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'widgets.dart';
 import 'search.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatefulWidget {
   @override
