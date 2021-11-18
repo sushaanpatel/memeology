@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xff9d5e9d),
+        selectedItemColor: Color(0xffe6e600),
         selectedFontSize: 0,
         unselectedFontSize: 0,
         unselectedItemColor: Colors.black,

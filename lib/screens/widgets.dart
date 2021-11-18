@@ -69,7 +69,7 @@ class HomePage extends StatelessWidget {
         width: 260,
       ),
       FutureBuilder(
-        future: Mongo.getall(),
+        future: Mongo.getall(rev: true, shuffle: true),
         builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(

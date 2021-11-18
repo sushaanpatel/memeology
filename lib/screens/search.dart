@@ -233,7 +233,8 @@ class _SearchPageState extends State<SearchPage> {
   Future<List<Map<String, dynamic>>> filter(String x) async {
     List<Map<String, dynamic>> temp = [];
     List<Map<String, dynamic>> out = [];
-    List<Map<String, dynamic>> query = await Mongo.getall();
+    List<Map<String, dynamic>> query =
+        await Mongo.getall(rev: true, shuffle: false);
     var count = await Mongo.coll.count();
     if (x.isNotEmpty) {
       for (var i = 0; i < count; i++) {
@@ -270,7 +271,7 @@ class ResultsWidget extends StatelessWidget {
               } else {
                 if (snapshot.data!.isEmpty) {
                   return FutureBuilder(
-                      future: Mongo.getall(),
+                      future: Mongo.getall(rev: false, shuffle: false),
                       builder: (context,
                           AsyncSnapshot<List<Map<String, dynamic>>> sp) {
                         if (sp.connectionState == ConnectionState.waiting) {

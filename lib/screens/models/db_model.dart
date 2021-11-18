@@ -1,10 +1,5 @@
 import 'package:mongo_dart/mongo_dart.dart';
 
-void main(List<String> args) async {
-  await Mongo.connect();
-  print(await Mongo.get("1"));
-}
-
 class Mongo {
   static var db, coll;
 
@@ -15,10 +10,18 @@ class Mongo {
     coll = db.collection("templates");
   }
 
-  static Future<List<Map<String, dynamic>>> getall() async {
+  static Future<List<Map<String, dynamic>>> getall(
+      {required bool rev, required bool shuffle}) async {
     try {
       List<Map<String, dynamic>> out = await coll.find().toList();
-      return out.reversed.toList();
+      if (shuffle == true) {
+        out.shuffle();
+      }
+      if (rev == true) {
+        return out.reversed.toList();
+      } else {
+        return out;
+      }
     } catch (e) {
       return Future.value();
     }
