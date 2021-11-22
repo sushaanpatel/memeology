@@ -9,6 +9,7 @@ class Meme {
   final String origin;
   final int popularity;
   final List<dynamic> tags;
+  final List<dynamic> examples;
   Meme(
       {required this.id,
       required this.pri_id,
@@ -17,7 +18,8 @@ class Meme {
       required this.explanation,
       required this.origin,
       required this.popularity,
-      required this.tags});
+      required this.tags,
+      required this.examples});
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -27,7 +29,8 @@ class Meme {
         'explanation': explanation,
         'origin': origin,
         'popularity': popularity,
-        'tags': tags
+        'tags': tags,
+        'examples': examples,
       };
 
   Meme.fromJson(var json)
@@ -38,5 +41,6 @@ class Meme {
         explanation = json['explanation'],
         origin = json['origin'],
         popularity = json['popularity'],
-        tags = json['tags'];
+        tags = json['tags'],
+        examples = json['examples'];
 }

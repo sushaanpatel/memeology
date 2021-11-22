@@ -34,8 +34,9 @@ class ImageDiv extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    meme.image,
+                  child: FadeInImage.assetNetwork(
+                    image: meme.image,
+                    placeholder: 'assets/icons/img_skeleton.gif',
                     width: MediaQuery.of(context).size.width,
                   ),
                 ),
@@ -43,6 +44,7 @@ class ImageDiv extends StatelessWidget {
                   height: 8,
                 ),
                 Text(meme.title,
+                    textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
                         fontSize: 24, fontWeight: FontWeight.w500)),
                 _buildPopularity(meme.popularity),
@@ -61,12 +63,26 @@ class ImageDiv extends StatelessWidget {
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final text = MediaQuery.of(context).platformBrightness == Brightness.dark
+        ? 'dark'
+        : 'light';
+    String modestr(x) {
+      if (x == 'dark') {
+        return 'assets/icons/logo_crop_dark.png';
+      } else {
+        return 'assets/icons/logo_crop_light.png';
+      }
+    }
+
     return SafeArea(
         child: SingleChildScrollView(
             child: Column(children: [
       Image.asset(
-        'assets/icons/logo_crop.png',
+        modestr(text),
         width: 260,
+      ),
+      const SizedBox(
+        height: 8,
       ),
       FutureBuilder(
         future: Mongo.getall(rev: true, shuffle: true),
@@ -88,13 +104,13 @@ class HomePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: snapshot.data!
                         .map((meme) => Padding(
-                            padding: EdgeInsets.fromLTRB(2, 0, 2, 8),
+                            padding: const EdgeInsets.fromLTRB(2, 0, 2, 8),
                             child: ImageDiv(meme: Meme.fromJson(meme))))
                         .toList());
               }
             }
           }
-          return Text('');
+          return const Text('');
         },
       )
     ])));
@@ -111,18 +127,57 @@ class TextSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-            padding: const EdgeInsets.fromLTRB(15, 0, 0, 10),
+            padding: const EdgeInsets.fromLTRB(15, 0, 2, 10),
             child: Text(
               title,
               style: GoogleFonts.poppins(
                   fontSize: 30, fontWeight: FontWeight.bold),
             )),
         Padding(
-            padding: EdgeInsets.only(left: 15),
+            padding: const EdgeInsets.only(left: 15, right: 2),
             child: Text(
               text,
               style: GoogleFonts.poppins(
                   fontSize: 17, fontWeight: FontWeight.w500),
+            )),
+      ],
+    );
+  }
+}
+
+class ExamplesDiv extends StatelessWidget {
+  final List<dynamic> example;
+  ExamplesDiv(this.example);
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 2, 10),
+            child: Text(
+              'Examples',
+              style: GoogleFonts.poppins(
+                  fontSize: 30, fontWeight: FontWeight.bold),
+            )),
+        Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 2, 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: []..addAll(example.map((e) => Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(e,
+                              width: MediaQuery.of(context).size.width * 0.95)),
+                      const SizedBox(
+                        height: 12,
+                      )
+                    ],
+                  ))),
             )),
       ],
     );

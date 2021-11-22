@@ -31,8 +31,8 @@ class ResultMeme extends StatelessWidget {
             child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
@@ -41,7 +41,7 @@ class ResultMeme extends StatelessWidget {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
-                                    width: 2, color: Color(0xffcfcfcf))),
+                                    width: 2, color: const Color(0xffe6e600))),
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: Image.network(meme.image,
@@ -52,6 +52,8 @@ class ResultMeme extends StatelessWidget {
                     ),
                     Column(children: [
                       Text(meme.title,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                           style: GoogleFonts.poppins(
                               fontSize: 20, fontWeight: FontWeight.w500)),
                       _buildPopularity(meme.popularity)
@@ -124,24 +126,25 @@ class _SearchPageState extends State<SearchPage> {
     return SafeArea(
         child: FloatingSearchBar(
       body: FloatingSearchBarScrollNotifier(
-          child: ResultsWidget(results: filter(selectedTerm))),
+          child: ResultsWidget(results: filter(selectedTerm), def: true)),
       transition: CircularFloatingSearchBarTransition(),
       physics: BouncingScrollPhysics(),
       elevation: 2,
       accentColor: Colors.blueAccent,
-      hintStyle: GoogleFonts.montserrat(
-          fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
-      queryStyle: GoogleFonts.montserrat(
-          fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
+      hintStyle:
+          GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w500),
+      queryStyle:
+          GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w500),
       clearQueryOnClose: true,
       borderRadius: BorderRadius.circular(10),
       title: Text(
         selectedTerm,
-        style: GoogleFonts.montserrat(
-            fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
+        style:
+            GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w500),
       ),
       controller: controller,
       hint: "Search",
+      iconColor: const Color(0xffe6e600),
       actions: [
         FloatingSearchBarAction.searchToClear(),
       ],
@@ -149,7 +152,11 @@ class _SearchPageState extends State<SearchPage> {
         FloatingSearchBarAction.icon(
             showIfClosed: false,
             showIfOpened: true,
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Color(0xffe6e600),
+              size: 24,
+            ),
             onTap: () {
               controller.close();
             }),
@@ -170,7 +177,6 @@ class _SearchPageState extends State<SearchPage> {
         return ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Material(
-            color: Colors.white,
             elevation: 8,
             child: Builder(builder: (context) {
               if (filteredList.isEmpty && controller.query.isEmpty) {
@@ -182,7 +188,8 @@ class _SearchPageState extends State<SearchPage> {
                       'Start Searching',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.caption,
+                      style: GoogleFonts.montserrat(
+                          fontSize: 18, fontWeight: FontWeight.w500),
                     ));
               } else if (filteredList.isEmpty) {
                 return ListTile(
@@ -240,7 +247,8 @@ class _SearchPageState extends State<SearchPage> {
       for (var i = 0; i < count; i++) {
         String g = query[i]["title"];
         String h = g.toLowerCase();
-        if (h.contains(x)) {
+        String y = x.toLowerCase();
+        if (h.contains(y)) {
           temp.add(query[i]);
         }
       }
@@ -252,8 +260,9 @@ class _SearchPageState extends State<SearchPage> {
 
 class ResultsWidget extends StatelessWidget {
   @override
+  bool def = false;
   Future<List<Map<String, dynamic>>> results;
-  ResultsWidget({required this.results});
+  ResultsWidget({required this.results, required this.def});
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: results,
@@ -270,29 +279,55 @@ class ResultsWidget extends StatelessWidget {
                 print(snapshot.error);
               } else {
                 if (snapshot.data!.isEmpty) {
-                  return FutureBuilder(
-                      future: Mongo.getall(rev: false, shuffle: false),
-                      builder: (context,
-                          AsyncSnapshot<List<Map<String, dynamic>>> sp) {
-                        if (sp.connectionState == ConnectionState.waiting) {
-                          return Center(
-                              child: CircularProgressIndicator(
-                            backgroundColor: Colors.yellow,
-                            color: Colors.yellow[700],
-                          ));
-                        } else {
-                          return ListView.builder(
-                              padding: EdgeInsets.only(top: 60),
-                              itemCount: sp.data!.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                    padding: EdgeInsets.fromLTRB(10, 0, 10, 4),
-                                    child: ResultMeme(
-                                      meme: Meme.fromJson(sp.data![index]),
-                                    ));
-                              });
-                        }
-                      });
+                  if (def) {
+                    return FutureBuilder(
+                        future: Mongo.getall(rev: false, shuffle: false),
+                        builder: (context,
+                            AsyncSnapshot<List<Map<String, dynamic>>> sp) {
+                          if (sp.connectionState == ConnectionState.waiting) {
+                            return Center(
+                                child: CircularProgressIndicator(
+                              backgroundColor: Colors.yellow,
+                              color: Colors.yellow[700],
+                            ));
+                          } else {
+                            return ListView.builder(
+                                padding: EdgeInsets.only(top: 60),
+                                itemCount: sp.data!.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(10, 0, 10, 4),
+                                      child: ResultMeme(
+                                        meme: Meme.fromJson(sp.data![index]),
+                                      ));
+                                });
+                          }
+                        });
+                  } else {
+                    return Container(
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  'assets/icons/sad_cat.png',
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.9,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text('No Memes Found',
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold)),
+                              ]),
+                        ));
+                  }
                 } else {
                   return ListView.builder(
                       padding: EdgeInsets.only(top: 60),

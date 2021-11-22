@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets.dart';
 import 'search.dart';
+import 'settings.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -16,17 +17,16 @@ class _HomeState extends State<Home> {
     _pageController.jumpToPage(index);
   }
 
-  PageController _pageController = PageController(
+  final PageController _pageController = PageController(
     initialPage: 0,
     keepPage: true,
   );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF5F5F5),
       body: PageView(
         controller: _pageController,
-        children: <Widget>[HomePage(), SearchPage()],
+        children: <Widget>[HomePage(), SearchPage(), SettingsPage()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
@@ -51,10 +51,9 @@ class _HomeState extends State<Home> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xffe6e600),
+        selectedItemColor: const Color(0xffe6e600),
         selectedFontSize: 0,
         unselectedFontSize: 0,
-        unselectedItemColor: Colors.black,
         onTap: _onItemTapped,
       ),
     );

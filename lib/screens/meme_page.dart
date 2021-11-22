@@ -35,21 +35,25 @@ class MemeDetail extends StatelessWidget {
             ));
           } else {
             if (snapshot.hasData) {
-              print("done");
               if (snapshot.hasError) {
                 print(snapshot.error);
               } else {
                 Meme meme = Meme.fromJson(snapshot.data);
                 return Scaffold(
                     appBar: AppBar(
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      iconTheme: const IconThemeData(
+                          color: Color(0xffe6e600), size: 30),
                       title: Text(
                         meme.title,
                         style: GoogleFonts.poppins(
-                            fontSize: 24, fontWeight: FontWeight.w500),
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                            color:
+                                Theme.of(context).textTheme.bodyText1!.color),
                       ),
                       shadowColor: Colors.transparent,
-                      backgroundColor: Color(0xfff5f5f5),
-                      foregroundColor: Colors.black,
                       centerTitle: true,
                     ),
                     body: SafeArea(
@@ -79,13 +83,14 @@ class MemeDetail extends StatelessWidget {
                                     child: Row(children: [
                                       Text('Popularity : ',
                                           style: GoogleFonts.poppins(
-                                              fontSize: 24,
+                                              fontSize: 30,
                                               fontWeight: FontWeight.bold)),
                                       _buildPopularity(meme.popularity)
                                     ])),
                                 const SizedBox(
                                   height: 30,
                                 ),
+                                ExamplesDiv(meme.examples)
                               ],
                             ))));
               }
