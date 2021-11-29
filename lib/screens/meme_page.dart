@@ -49,7 +49,7 @@ class MemeDetail extends StatelessWidget {
                         meme.title,
                         style: GoogleFonts.poppins(
                             fontSize: 24,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.bold,
                             color:
                                 Theme.of(context).textTheme.bodyText1!.color),
                       ),

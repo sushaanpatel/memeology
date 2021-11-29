@@ -13,14 +13,15 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+      create: (context) => ThemeP(),
       builder: (context, _) {
+        final themeProvider = Provider.of<ThemeP>(context);
         return MaterialApp(
           title: 'Memeology',
           home: Home(),
           debugShowCheckedModeBanner: false,
           theme: Theme.light,
-          themeMode: ThemeMode.system,
+          themeMode: themeProvider.themeMode,
           darkTheme: Theme.dark,
           initialRoute: '/',
           onGenerateRoute: (settings) {
@@ -47,19 +48,21 @@ class MyApp extends StatelessWidget {
 class Theme {
   static final light = ThemeData(
       primarySwatch: Colors.blue,
+      primaryColor: const Color(0xffe6e600),
       brightness: Brightness.light,
       scaffoldBackgroundColor: const Color(0xffF5F5F5),
       colorScheme: const ColorScheme.light());
 
   static final dark = ThemeData(
       primarySwatch: Colors.blue,
+      primaryColor: const Color(0xffe6e600),
       brightness: Brightness.dark,
       scaffoldBackgroundColor: const Color(0xff222222),
       colorScheme: const ColorScheme.dark());
 }
 
-class ThemeProvider extends ChangeNotifier {
-  static ThemeMode themeMode = ThemeMode.system;
+class ThemeP extends ChangeNotifier {
+  ThemeMode themeMode = ThemeMode.dark;
   bool get isDarkMode => themeMode == ThemeMode.dark;
   void toggleTheme(bool isDark) {
     themeMode = isDark ? ThemeMode.dark : ThemeMode.light;

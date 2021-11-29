@@ -9,13 +9,13 @@ class ResultMeme extends StatelessWidget {
   Widget _buildPopularity(int popularity) {
     List<Widget> stars = [];
     for (int i = 0; i < popularity; i++) {
-      stars.add(Icon(Icons.star, color: Colors.yellow));
+      stars.add(const Icon(Icons.star, color: Colors.yellow));
     }
     Widget out = Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[]..addAll(stars));
+        children: <Widget>[...stars]);
     return out;
   }
 
@@ -28,38 +28,41 @@ class ResultMeme extends StatelessWidget {
             elevation: 2,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                        padding: EdgeInsets.all(4),
-                        child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                    width: 2, color: const Color(0xffe6e600))),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.network(meme.image,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.30)))),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.05,
-                    ),
-                    Column(children: [
-                      Text(meme.title,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                                width: 2, color: const Color(0xffe6e600))),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: FadeInImage.assetNetwork(
+                              placeholder: 'assets/icons/img_skeleton.gif',
+                              image: meme.image,
+                              width: MediaQuery.of(context).size.width * 0.3,
+                            )))),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.05,
+                ),
+                Column(children: [
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: Text(meme.title,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: GoogleFonts.poppins(
-                              fontSize: 20, fontWeight: FontWeight.w500)),
-                      _buildPopularity(meme.popularity)
-                    ]),
-                  ],
-                ))));
+                              fontSize: 20, fontWeight: FontWeight.w500),
+                          textAlign: TextAlign.center)),
+                  _buildPopularity(meme.popularity)
+                ]),
+              ],
+            )));
   }
 
   _onlocationtap(BuildContext context, String id) {
@@ -128,7 +131,7 @@ class _SearchPageState extends State<SearchPage> {
       body: FloatingSearchBarScrollNotifier(
           child: ResultsWidget(results: filter(selectedTerm), def: true)),
       transition: CircularFloatingSearchBarTransition(),
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       elevation: 2,
       accentColor: Colors.blueAccent,
       hintStyle:
@@ -212,7 +215,7 @@ class _SearchPageState extends State<SearchPage> {
                                 maxLines: 1, overflow: TextOverflow.ellipsis),
                             leading: const Icon(Icons.history),
                             trailing: IconButton(
-                              icon: Icon(Icons.clear),
+                              icon: const Icon(Icons.clear),
                               onPressed: () {
                                 setState(() {
                                   deleteTerm(e);
@@ -259,8 +262,7 @@ class _SearchPageState extends State<SearchPage> {
 }
 
 class ResultsWidget extends StatelessWidget {
-  @override
-  bool def = false;
+  bool def;
   Future<List<Map<String, dynamic>>> results;
   ResultsWidget({required this.results, required this.def});
   Widget build(BuildContext context) {
@@ -279,7 +281,7 @@ class ResultsWidget extends StatelessWidget {
                 print(snapshot.error);
               } else {
                 if (snapshot.data!.isEmpty) {
-                  if (def) {
+                  if (def == true) {
                     return FutureBuilder(
                         future: Mongo.getall(rev: false, shuffle: false),
                         builder: (context,
@@ -292,12 +294,12 @@ class ResultsWidget extends StatelessWidget {
                             ));
                           } else {
                             return ListView.builder(
-                                padding: EdgeInsets.only(top: 60),
+                                padding: const EdgeInsets.only(top: 60),
                                 itemCount: sp.data!.length,
                                 itemBuilder: (context, index) {
                                   return Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(10, 0, 10, 4),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 0, 10, 4),
                                       child: ResultMeme(
                                         meme: Meme.fromJson(sp.data![index]),
                                       ));
@@ -330,11 +332,11 @@ class ResultsWidget extends StatelessWidget {
                   }
                 } else {
                   return ListView.builder(
-                      padding: EdgeInsets.only(top: 60),
+                      padding: const EdgeInsets.only(top: 60),
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         return Padding(
-                            padding: EdgeInsets.fromLTRB(10, 0, 10, 4),
+                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 4),
                             child: ResultMeme(
                               meme: Meme.fromJson(snapshot.data![index]),
                             ));

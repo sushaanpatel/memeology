@@ -13,7 +13,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    final themeProvider = Provider.of<ThemeP>(context);
     return Center(
         child: SafeArea(
             child: SingleChildScrollView(
@@ -23,10 +23,13 @@ class _SettingsPageState extends State<SettingsPage> {
         children: [
           ListTile(
               trailing: Switch.adaptive(
+                  activeColor: const Color(0xffe6e600),
+                  autofocus: true,
+                  inactiveThumbColor: const Color(0xffe6e600),
                   value: themeProvider.isDarkMode,
                   onChanged: (value) {
                     final provider =
-                        Provider.of<ThemeProvider>(context, listen: false);
+                        Provider.of<ThemeP>(context, listen: false);
                     provider.toggleTheme(value);
                   }),
               title: Text("Dark Mode",

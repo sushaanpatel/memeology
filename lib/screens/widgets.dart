@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'models/db_model.dart';
 import 'models/meme_model.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pp_project/main.dart';
 
 class ImageDiv extends StatelessWidget {
   final Meme meme;
   Widget _buildPopularity(int popularity) {
     List<Widget> stars = [];
     for (int i = 0; i < popularity; i++) {
-      stars.add(Icon(Icons.star, color: Colors.yellow));
+      stars.add(const Icon(Icons.star, color: Colors.yellow));
     }
     Widget out = Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[]..addAll(stars));
+        children: <Widget>[...stars]);
     return out;
   }
 
@@ -46,7 +48,7 @@ class ImageDiv extends StatelessWidget {
                 Text(meme.title,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
-                        fontSize: 24, fontWeight: FontWeight.w500)),
+                        fontSize: 24, fontWeight: FontWeight.w600)),
                 _buildPopularity(meme.popularity),
                 const SizedBox(
                   height: 8,
@@ -118,7 +120,7 @@ class HomeElement extends StatefulWidget {
 class _HomeElementState extends State<HomeElement> {
   @override
   Widget build(BuildContext context) {
-    final text = MediaQuery.of(context).platformBrightness == Brightness.dark
+    final text = Provider.of<ThemeP>(context).themeMode == ThemeMode.dark
         ? 'dark'
         : 'light';
     String modestr(x) {
@@ -131,7 +133,6 @@ class _HomeElementState extends State<HomeElement> {
 
     List<List<Map<String, dynamic>>> list = widget.list;
     int index = widget.index;
-    List<Map<String, dynamic>> data;
     return SingleChildScrollView(
         child: Column(children: [
       Image.asset(
@@ -212,19 +213,22 @@ class ExamplesDiv extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: []..addAll(example.map((e) => Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(e,
-                              width: MediaQuery.of(context).size.width * 0.95)),
-                      const SizedBox(
-                        height: 12,
-                      )
-                    ],
-                  ))),
+              children: [
+                ...example.map((e) => Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(e,
+                                width:
+                                    MediaQuery.of(context).size.width * 0.95)),
+                        const SizedBox(
+                          height: 12,
+                        )
+                      ],
+                    ))
+              ],
             )),
       ],
     );
