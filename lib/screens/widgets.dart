@@ -60,7 +60,62 @@ class ImageDiv extends StatelessWidget {
   }
 }
 
+PageController pg = PageController(initialPage: 0);
+
 class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child: FutureBuilder(
+      future: Mongo.getall(rev: true, shuffle: true),
+      builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+              child: CircularProgressIndicator(
+            backgroundColor: Colors.yellow,
+            color: Colors.yellow[700],
+          ));
+        } else {
+          if (snapshot.hasData) {
+            if (snapshot.hasError) {
+              print(snapshot.error);
+            } else {
+              List<Map<String, dynamic>> temp = [];
+              List<List<Map<String, dynamic>>> data = [];
+              int i = 0;
+              while (i < snapshot.data!.length) {
+                temp.add(snapshot.data![i]);
+                i++;
+                if (i != 0 && i % 10 == 0) {
+                  data.add(temp);
+                  temp = [];
+                }
+              }
+              return PageView(children: [
+                HomeElement(index: 0, list: data),
+                HomeElement(index: 1, list: data),
+                HomeElement(index: 2, list: data),
+                HomeElement(index: 3, list: data),
+                HomeElement(list: data, index: 4)
+              ]);
+            }
+          }
+        }
+        return const Text('');
+      },
+    ));
+  }
+}
+
+class HomeElement extends StatefulWidget {
+  List<List<Map<String, dynamic>>> list;
+  int index;
+  HomeElement({required this.list, required this.index});
+  @override
+  _HomeElementState createState() => _HomeElementState();
+}
+
+class _HomeElementState extends State<HomeElement> {
   @override
   Widget build(BuildContext context) {
     final text = MediaQuery.of(context).platformBrightness == Brightness.dark
@@ -74,9 +129,11 @@ class HomePage extends StatelessWidget {
       }
     }
 
-    return SafeArea(
-        child: SingleChildScrollView(
-            child: Column(children: [
+    List<List<Map<String, dynamic>>> list = widget.list;
+    int index = widget.index;
+    List<Map<String, dynamic>> data;
+    return SingleChildScrollView(
+        child: Column(children: [
       Image.asset(
         modestr(text),
         width: 260,
@@ -84,36 +141,26 @@ class HomePage extends StatelessWidget {
       const SizedBox(
         height: 8,
       ),
-      FutureBuilder(
-        future: Mongo.getall(rev: true, shuffle: true),
-        builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-                child: CircularProgressIndicator(
-              backgroundColor: Colors.yellow,
-              color: Colors.yellow[700],
-            ));
-          } else {
-            if (snapshot.hasData) {
-              if (snapshot.hasError) {
-                print(snapshot.error);
-              } else {
-                return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: snapshot.data!
-                        .map((meme) => Padding(
-                            padding: const EdgeInsets.fromLTRB(2, 0, 2, 8),
-                            child: ImageDiv(meme: Meme.fromJson(meme))))
-                        .toList());
-              }
-            }
-          }
-          return const Text('');
-        },
+      Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: list[index]
+              .map((meme) => Padding(
+                  padding: const EdgeInsets.fromLTRB(2, 0, 2, 8),
+                  child: ImageDiv(meme: Meme.fromJson(meme))))
+              .toList()),
+      Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          const Icon(Icons.arrow_back),
+          Text("Swipe to back | Swipe to next",
+              style: GoogleFonts.poppins(
+                  fontSize: 18, fontWeight: FontWeight.w500)),
+          const Icon(Icons.arrow_forward)
+        ]),
       )
-    ])));
+    ]));
   }
 }
 
