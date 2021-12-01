@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'models/api.dart';
 import 'package:provider/provider.dart';
 import 'models/db_model.dart';
 import 'models/meme_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pp_project/main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ImageDiv extends StatelessWidget {
   final Meme meme;
@@ -135,9 +137,18 @@ class _HomeElementState extends State<HomeElement> {
     int index = widget.index;
     return SingleChildScrollView(
         child: Column(children: [
-      Image.asset(
-        modestr(text),
-        width: 260,
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+              child: Image.asset(
+                modestr(text),
+                width: 260,
+              ),
+              padding: const EdgeInsets.only(left: 10)),
+          Padding(
+              child: MemeButton(), padding: const EdgeInsets.only(right: 13))
+        ],
       ),
       const SizedBox(
         height: 8,
@@ -231,6 +242,91 @@ class ExamplesDiv extends StatelessWidget {
               ],
             )),
       ],
+    );
+  }
+}
+
+class MemeButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => showDialog(
+          context: context,
+          builder: (context) {
+            return FutureBuilder(
+                future: Api.getMeme('dankmemes'),
+                builder:
+                    (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        elevation: 10,
+                        title: Text(
+                          'Getting meme....',
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.poppins(
+                              fontSize: 20, fontWeight: FontWeight.w600),
+                        ),
+                        content: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset('assets/icons/img_skeleton.gif'),
+                        ));
+                  } else {
+                    if (snapshot.hasData) {
+                      if (snapshot.hasError) {
+                        print(snapshot.error);
+                      } else {
+                        var r = ApiR.fromJson(
+                            snapshot.data as Map<String, dynamic>);
+                        return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            elevation: 10,
+                            title: Text(
+                              r.title,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 20, fontWeight: FontWeight.w600),
+                            ),
+                            content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: FadeInImage.assetNetwork(
+                                      placeholder:
+                                          'assets/icons/img_skeleton.gif',
+                                      image: r.url,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.98,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  GestureDetector(
+                                      onTap: () => launch(
+                                            r.postLink,
+                                            forceWebView: true,
+                                          ),
+                                      child: Text(
+                                        r.postLink,
+                                        style: GoogleFonts.poppins(
+                                            color: Colors.blue,
+                                            decoration:
+                                                TextDecoration.underline),
+                                      ))
+                                ]));
+                      }
+                    }
+                  }
+                  return const Text('');
+                });
+          }),
+      child: Image.asset(
+        'assets/icons/doge_ic.png',
+        width: MediaQuery.of(context).size.width * 0.1,
+      ),
     );
   }
 }
