@@ -1,5 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:math';
+
+var rand = Random();
 
 class ApiR {
   final String title;
@@ -14,12 +17,15 @@ class ApiR {
 }
 
 class Api {
-  static Future<Map<String, dynamic>> getMeme(var subreddit) async {
+  static Future<Map<String, dynamic>> getMeme() async {
+    List<String> x = ['dankmemes', 'memes', 'wholesomememes'];
+    int randInt = rand.nextInt(x.length);
+    String subreddit = x[randInt];
     var url = Uri.parse('https://meme-api.herokuapp.com/gimme/$subreddit');
     var r = await http.get(url);
     var json = jsonDecode(r.body);
     if (json['nsfw'] == true) {
-      getMeme(subreddit);
+      getMeme();
     } else {
       return {
         'title': json['title'],
