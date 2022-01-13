@@ -36,17 +36,16 @@ class ImageDiv extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: FadeInImage.assetNetwork(
-                    image: meme.image,
-                    placeholder: 'assets/icons/img_skeleton.gif',
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
+                Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: FadeInImage.assetNetwork(
+                        image: meme.image,
+                        placeholder: 'assets/icons/img_skeleton.gif',
+                        width: MediaQuery.of(context).size.width,
+                      ),
+                    )),
                 Text(meme.title,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
