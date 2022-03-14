@@ -50,7 +50,7 @@ class Theme {
       primarySwatch: Colors.blue,
       primaryColor: const Color(0xffe6e600),
       brightness: Brightness.light,
-      scaffoldBackgroundColor: const Color(0xffF5F5F5),
+      scaffoldBackgroundColor: const Color(0xffF5EFED),
       colorScheme: const ColorScheme.light());
 
   static final dark = ThemeData(

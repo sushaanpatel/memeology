@@ -90,7 +90,7 @@ class MemeDetail extends StatelessWidget {
                                 const SizedBox(
                                   height: 30,
                                 ),
-                                ExamplesDiv(meme.examples)
+                                ExamplesDiv(meme.examples),
                               ],
                             ))));
               }

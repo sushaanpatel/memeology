@@ -25,10 +25,14 @@ class ImageDiv extends StatelessWidget {
   ImageDiv({required this.meme});
   @override
   Widget build(BuildContext context) {
+    var co = Provider.of<ThemeP>(context).themeMode == ThemeMode.dark
+        ? 0xffF5EFED
+        : 0xff222222;
     return GestureDetector(
         onTap: () => _onlocationtap(context, meme.pri_id),
         child: Card(
-            elevation: 2,
+            color: Color(co), //BFACAA
+            elevation: 4,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             child: Column(
@@ -49,7 +53,9 @@ class ImageDiv extends StatelessWidget {
                 Text(meme.title,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
-                        fontSize: 24, fontWeight: FontWeight.w600)),
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white)),
                 _buildPopularity(meme.popularity),
                 const SizedBox(
                   height: 8,
@@ -96,10 +102,7 @@ class HomePage extends StatelessWidget {
               }
               return PageView(children: [
                 HomeElement(index: 0, list: data),
-                HomeElement(index: 1, list: data),
-                HomeElement(index: 2, list: data),
-                HomeElement(index: 3, list: data),
-                HomeElement(list: data, index: 4)
+                HomeElement(index: 1, list: data)
               ]);
             }
           }

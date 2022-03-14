@@ -27,9 +27,10 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  material_floating_search_bar: 0.3.6
-  mongo_dart: 0.7.2
-  google_fonts: 2.1.0
+  platform: ^3.1.0
+  material_floating_search_bar: ^0.3.7
+  mongo_dart: ^0.7.4
+  google_fonts: ^2.3.1
   crypto : ^3.0.0
   flutter:
     sdk: flutter
@@ -38,7 +39,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  provider: 6.0.1
+  provider: ^6.0.2
   http: ^0.13.4
   url_launcher: ^6.0.17
 
