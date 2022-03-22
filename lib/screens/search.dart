@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../main.dart';
 import 'models/db_model.dart';
 import 'models/meme_model.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,10 +24,14 @@ class ResultMeme extends StatelessWidget {
   ResultMeme({required this.meme});
   @override
   Widget build(BuildContext context) {
+    var co = Provider.of<ThemeP>(context).themeMode == ThemeMode.dark
+        ? 0xffA39BA8
+        : 0xff222222;
     return GestureDetector(
         onTap: () => _onlocationtap(context, meme.pri_id),
         child: Card(
-            elevation: 2,
+            elevation: 6,
+            color: Color(co),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             child: Row(
@@ -37,9 +43,7 @@ class ResultMeme extends StatelessWidget {
                     padding: const EdgeInsets.all(4),
                     child: Container(
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                                width: 2, color: const Color(0xffe6e600))),
+                            borderRadius: BorderRadius.circular(8)),
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: FadeInImage.assetNetwork(
@@ -57,7 +61,9 @@ class ResultMeme extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: GoogleFonts.poppins(
-                              fontSize: 20, fontWeight: FontWeight.w500),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
                           textAlign: TextAlign.center)),
                   _buildPopularity(meme.popularity)
                 ]),

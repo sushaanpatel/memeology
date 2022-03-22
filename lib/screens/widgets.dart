@@ -26,13 +26,13 @@ class ImageDiv extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var co = Provider.of<ThemeP>(context).themeMode == ThemeMode.dark
-        ? 0xffF5EFED
+        ? 0xffA39BA8
         : 0xff222222;
     return GestureDetector(
         onTap: () => _onlocationtap(context, meme.pri_id),
         child: Card(
-            color: Color(co), //BFACAA
-            elevation: 4,
+            color: Color(co),
+            elevation: 6,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             child: Column(
