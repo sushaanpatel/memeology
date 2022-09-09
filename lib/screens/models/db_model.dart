@@ -5,7 +5,7 @@ class Mongo {
 
   static connect() async {
     db = await Db.create(
-        'mongodb+srv://root:_password@memes.2xsyj.mongodb.net/memes?retryWrites=true&w=majority');
+        'mongodb+srv://root:<password>@memes.2xsyj.mongodb.net/memes?retryWrites=true&w=majority');
     await db.open();
     coll = db.collection("templates");
   }
