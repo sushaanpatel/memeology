@@ -1,2 +1,2 @@
-# memeology
-Memeology is a meme information app that contains information about meme templates and their context. Download Link at https://github.com/sushaanpatel/memeology/releases
+# Memeology
+Memeology is a meme literacy app that contains information about meme templates and their context. Downloads at https://github.com/sushaanpatel/memeology/releases
