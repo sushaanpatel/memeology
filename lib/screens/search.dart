@@ -251,7 +251,7 @@ class _SearchPageState extends State<SearchPage> {
     List<Map<String, dynamic>> out = [];
     List<Map<String, dynamic>> query =
         await Mongo.getall(rev: true, shuffle: false);
-    var count = await Mongo.coll.count();
+    var count = query.length;
     if (x.isNotEmpty) {
       for (var i = 0; i < count; i++) {
         String g = query[i]["title"];

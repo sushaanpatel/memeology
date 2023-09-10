@@ -21,7 +21,7 @@ class Api {
     List<String> x = ['dankmemes', 'memes', 'wholesomememes'];
     int randInt = rand.nextInt(x.length);
     String subreddit = x[randInt];
-    var url = Uri.parse('https://meme-api.herokuapp.com/gimme/$subreddit');
+    var url = Uri.parse('https://meme-api.com/gimme/$subreddit');
     var r = await http.get(url);
     var json = jsonDecode(r.body);
     if (json['nsfw'] == true) {

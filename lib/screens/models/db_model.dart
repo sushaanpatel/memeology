@@ -1,11 +1,13 @@
 import 'package:mongo_dart/mongo_dart.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Mongo {
   static var db, coll;
 
   static connect() async {
+    var pass = dotenv.env['PASS'];
     db = await Db.create(
-        'mongodb+srv://root:_password@memes.2xsyj.mongodb.net/memes?retryWrites=true&w=majority');
+        'mongodb+srv://root:$pass@memes.2xsyj.mongodb.net/memes?retryWrites=true&w=majority');
     await db.open();
     coll = db.collection("templates");
   }

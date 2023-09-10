@@ -3,9 +3,11 @@ import 'package:provider/provider.dart';
 import 'screens/meme_page.dart';
 import 'screens/home.dart';
 import 'screens/models/db_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: "lib/.env");
   await Mongo.connect();
   runApp(MyApp());
 }
