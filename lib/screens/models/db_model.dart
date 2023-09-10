@@ -7,7 +7,11 @@ class Mongo {
   static connect() async {
     var pass = dotenv.env['PASS'];
     db = await Db.create(
+<<<<<<< HEAD
         'mongodb+srv://root:$pass@memes.2xsyj.mongodb.net/memes?retryWrites=true&w=majority');
+=======
+        'mongodb+srv://root:<password>@memes.2xsyj.mongodb.net/memes?retryWrites=true&w=majority');
+>>>>>>> 56ac719321b12cdf6df552eabe98633e161964bc
     await db.open();
     coll = db.collection("templates");
   }
